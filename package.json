@@ -12,9 +12,10 @@
     "@ensdomains/thorin": "^0.6.44",
     "@web3modal/ethers": "^3.4.0",
     "ethers": "^6.9.0",
-    "next": "13.5.6",
+    "next": "13.2.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-transition-state": "1.1.5",
     "styled-components": "^6.1.1"
   },
@@ -24,7 +25,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "eslint": "^8",
-    "eslint-config-next": "13.5.6",
+    "eslint-config-next": "13.2.4",
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5"
