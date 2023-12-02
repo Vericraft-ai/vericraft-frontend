@@ -3,18 +3,17 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || "";
 
 const mainnet = {
-  chainId: 1,
-  name: "Ethereum",
+  chainId: 43114,
+  name: "Avalanche Network",
   currency: "ETH",
-  explorerUrl: "https://etherscan.io",
-  rpcUrl: "https://cloudfcode lare-eth.com",
+  explorerUrl: " https://snowtrace.io/",
+  rpcUrl: "https://api.avax.network/ext/bc/C/rpc",
 };
-
 const metadata = {
-  name: "My Website",
-  description: "My Website description",
-  url: "https://mywebsite.com",
-  icons: ["https://avatars.mywebsite.com/"],
+  name: "Vericraft AI",
+  description: "Verify digital content ownership",
+  url: "https://vericraft-frontend.vercel.app/",
+  icons: ["https://vericraft-frontend.vercel.app/logo.svg"],
 };
 
 createWeb3Modal({
