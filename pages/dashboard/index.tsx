@@ -7,7 +7,6 @@ import { TickSquareIcon } from "@/components/Icons/TickSquareIcon";
 import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
-import { BackButton } from "@/components/BackButton";
 
 export const LoginContainer = styled.div`
   display: flex;
@@ -114,13 +113,13 @@ export default function Login() {
               <LoginCard
                 Icon={ChatIcon}
                 title="generate nfts"
-                link="/generate-nfts"
+                link="/dashboard/generate"
                 description="create your digital content with ai and mint nft directly to your wallet"
               />
               <LoginCard
                 Icon={TickSquareIcon}
                 title="validate digital content"
-                link="/verify-nft"
+                link="/dashboard/verify"
                 description="use ai and nftproving and verifying ownership of digital content"
               />
             </div>

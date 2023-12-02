@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Logo } from "../Icons/Logo";
 import { UserIcon } from "../Icons/UserIcon";
 import { WalletIcon } from "../Icons/WalletIcon";
+import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 const NavContainer = styled.nav<{ sticky?: boolean }>`
   display: flex;
@@ -56,24 +57,41 @@ type Props = {
 };
 
 export const Navbar = ({ showLogo, sticky, showProfile }: Props) => {
+  const { open } = useWeb3Modal();
+  const { address, isConnected } = useWeb3ModalAccount();
+
+  const truncatedAddress = address
+    ? `${address?.slice(0, 4)}...${address?.slice(-2)}`
+    : "connect";
+
+  const getStarted = () => {
+    if (isConnected) {
+      return (
+        <Link href="/dashboard">
+          <Button colorStyle="greySecondary">dashboard</Button>
+        </Link>
+      );
+    } else {
+      return (
+        <Button colorStyle="greySecondary" onClick={() => open()}>
+          get started
+        </Button>
+      );
+    }
+  };
+
   return (
     <NavContainer sticky={sticky}>
       {showLogo && <Logo />}
       <div>
-        {showProfile && (
-          <Button colorStyle="greySecondary">
-            <UserIcon />
+        {isConnected && (
+          <Button colorStyle="greySecondary" onClick={() => open()}>
+            <WalletIcon />
+            <span>{truncatedAddress}</span>
           </Button>
         )}
-        <Link href="/login">
-          <Button colorStyle="greySecondary">
-            <WalletIcon />
-            <span>login</span>
-          </Button>
-        </Link>
-        <Link href="/">
-          <Button colorStyle="greySecondary">get started</Button>
-        </Link>
+
+        {getStarted()}
       </div>
     </NavContainer>
   );

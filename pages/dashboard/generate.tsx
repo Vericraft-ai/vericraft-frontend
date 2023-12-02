@@ -75,11 +75,7 @@ const Col2 = styled.div`
       font-weight: 700;
       color: #1e2122;
 
-      &::after {
-        content: "*";
-        color: #1e2122;
-        margin-left: 0.25rem;
-      }
+   
     }
   }
 
