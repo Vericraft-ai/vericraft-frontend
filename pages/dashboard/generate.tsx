@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { Navbar } from "@/components/Navbar";
 import { Uploader } from "@/components/Uploader";
@@ -5,7 +6,7 @@ import {
   Button,
   Input,
   MagnifyingGlassSimpleSVG,
-  Textarea,
+  Textarea
 } from "@ensdomains/thorin";
 import Head from "next/head";
 import styled from "styled-components";
@@ -74,8 +75,6 @@ const Col2 = styled.div`
     label > div {
       font-weight: 700;
       color: #1e2122;
-
-   
     }
   }
 
@@ -85,6 +84,46 @@ const Col2 = styled.div`
 `;
 
 export default function GenerateNfts() {
+  const [nftName, setNftName] = useState("");
+  const [nftDescription, setNftDescription] = useState("");
+  const [showErrorName, setShowErrorName] = useState(false);
+  const [showErrorDescription, setShowErrorDescription] = useState(false);
+
+  const handleNftNameChange = (event: any) => {
+    setNftName(event.target.value);
+    event.target.value !== ""
+      ? setShowErrorName(false)
+      : setShowErrorName(true);
+  };
+
+  const handleNftDescriptionChange = (event: any) => {
+    setNftDescription(event.target.value);
+
+    event.target.value !== ""
+      ? setShowErrorDescription(false)
+      : setShowErrorDescription(true);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    if (nftName === "") {
+      setShowErrorName(showErrorName);
+    }
+
+    if (nftDescription === "") {
+      setShowErrorDescription(showErrorDescription);
+    }
+
+    if (nftName !== "" && nftDescription !== "") {
+      // Submit the form
+      console.log(
+        "submitting form",
+        `Nft name is -${nftName}-, Nft description is -${nftDescription}-`
+      );
+    }
+  };
+
   return (
     <>
       <Head>
@@ -113,16 +152,30 @@ export default function GenerateNfts() {
           </Col1>
 
           <Col2>
-            <form>
-              <Input label="name" placeholder="name your nft" />
-              <Input label="supply" placeholder="name your nft" />
+            <form onSubmit={handleSubmit}>
               <Input
-                label="external link"
-                placeholder="https://opensea.io/item/23"
+                label="name"
+                placeholder="name your nft"
+                value={nftName}
+                onChange={handleNftNameChange}
+                error={showErrorName ? "name cannot be empty" : null}
               />
-              <Textarea label="description" placeholder="Content" />
+              <Textarea
+                label="description"
+                placeholder="Content"
+                value={nftDescription}
+                onChange={handleNftDescriptionChange}
+                error={
+                  showErrorDescription ? "description cannot be empty" : null
+                }
+              />
 
-              <Button type="submit">create</Button>
+              <Button
+                type="submit"
+                disabled={showErrorDescription || showErrorName}
+              >
+                create
+              </Button>
             </form>
           </Col2>
         </Row>
