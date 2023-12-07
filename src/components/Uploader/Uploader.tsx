@@ -2,6 +2,8 @@ import { useDragnDrop } from "@/hooks/useDragnDrop";
 import { UploadIcon } from "../Icons/UploadIcon";
 import styled from "styled-components";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useIPFS } from "@/hooks/useDragnDrop/useIPFS";
 
 const getColor = (props: any) => {
   if (props.isDragAccept) {
@@ -52,7 +54,12 @@ export const Uploader = () => {
     isDragAccept,
     isDragReject,
   } = useDragnDrop();
-  console.log(acceptedFiles);
+  const { uploadFile } = useIPFS();
+
+  useEffect(() => {
+    console.log(acceptedFiles[0])
+    uploadFile(acceptedFiles[0]);
+  }, [acceptedFiles, uploadFile]);
 
   return (
     <Container {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
@@ -60,7 +67,13 @@ export const Uploader = () => {
         <Image
           src={URL.createObjectURL(acceptedFiles[0])}
           alt="Uploaded Image"
-          style={{ objectFit: "contain", width: "auto", height: "auto", minHeight: "100%", minWidth: "100%" }}
+          style={{
+            objectFit: "contain",
+            width: "auto",
+            height: "auto",
+            minHeight: "100%",
+            minWidth: "100%",
+          }}
           width={100}
           height={100}
         />

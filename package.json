@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@ensdomains/thorin": "^0.6.44",
+    "@pinata/sdk": "^2.1.0",
     "@web3modal/ethers": "^3.4.0",
     "ethers": "^6.9.0",
+    "form-data": "^4.0.0",
+    "formidable": "^3.5.1",
     "next": "13.2.4",
     "react": "^18",
     "react-dom": "^18",
@@ -20,6 +23,7 @@
     "styled-components": "^6.1.1"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
