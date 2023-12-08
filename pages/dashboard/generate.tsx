@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { BackButton } from "@/components/BackButton";
 import { Navbar } from "@/components/Navbar";
 import { Uploader } from "@/components/Uploader";
 import { useHandleInputChange } from "@/hooks/useHandleInputChange";
 import {
-	Button,
-	Input,
-	MagnifyingGlassSimpleSVG,
-	Textarea,
+  Button,
+  Input,
+  MagnifyingGlassSimpleSVG,
+  Textarea
 } from "@ensdomains/thorin";
 import Head from "next/head";
 import Image from "next/image";
@@ -84,92 +85,128 @@ export const Col1 = styled.div`
 `;
 
 const Col2 = styled.div`
-	height: 100%;
-	background-color: ${(props) => props.theme.colors.background};
-	width: 50%;
+  height: 100%;
+  background-color: ${(props) => props.theme.colors.background};
+  width: 50%;
 
-	@media (max-width: 768px) {
-		width: 100%;
-	}
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
-	& > form {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
+  & > form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 
-		label > div {
-			font-weight: 700;
-			color: #1e2122;
-		}
-	}
+    label > div {
+      font-weight: 700;
+      color: #1e2122;
+    }
+  }
 
-	button {
-		background: #000;
-	}
+  button {
+    background: #000;
+  }
 `;
 
 export default function GenerateNfts() {
-	const { handleChange, generate, isLoading, imgSrc, onSubmit } =
-		useHandleInputChange();
-	return (
-		<>
-			<Head>
-				<title>Generate Nfts | VericraftAi</title>
-			</Head>
+  const [nftName, setNftName] = useState("");
+  const [nftDescription, setNftDescription] = useState("");
+  const [showErrorName, setShowErrorName] = useState(false);
+  const [showErrorDescription, setShowErrorDescription] = useState(false);
 
-			<Container>
-				<div>
-					<BackButton />
-					<Navbar />
-				</div>
+  const handleNftNameChange = (event: any) => {
+    setNftName(event.target.value);
+    event.target.value !== ""
+      ? setShowErrorName(false)
+      : setShowErrorName(true);
+  };
 
-				<Row>
-					<Col1>
-						<div>
-							<Input
-								icon={<MagnifyingGlassSimpleSVG />}
-								label=''
-								onChange={handleChange}
-								placeholder='generate nft with ai'
-							/>
-							<div className='generate'>
-								<Button disabled={isLoading} type='button' onClick={generate}>
-									generate
-								</Button>
-							</div>
-						</div>
-						<div className='generate-image'>
-							{!isLoading && imgSrc && (
-								<img
-									height={250}
-									width={250}
-									src={imgSrc}
-									alt='generated image'
-								/>
-							)}
-						</div>
-					</Col1>
-					<Col2>
-						<form onSubmit={onSubmit}>
-							<Input name='name' label='name' placeholder='name your nft' />
-							<Input name='supply' label='supply' placeholder='name your nft' />
-							<Input
-								name='externalLink'
-								label='external link'
-								placeholder='https://opensea.io/item/23'
-							/>
-							<Textarea
-								name='description'
-								label='description'
-								placeholder='Content'
-							/>
+  const handleNftDescriptionChange = (event: any) => {
+    setNftDescription(event.target.value);
 
-							<Button type='submit'>create</Button>
-						</form>
-					</Col2>
-				</Row>
-			</Container>
-		</>
-	);
+    event.target.value !== ""
+      ? setShowErrorDescription(false)
+      : setShowErrorDescription(true);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    if (nftName === "") {
+      setShowErrorName(showErrorName);
+    }
+
+    if (nftDescription === "") {
+      setShowErrorDescription(showErrorDescription);
+    }
+
+    if (nftName !== "" && nftDescription !== "") {
+      // Submit the form
+      console.log(
+        "submitting form",
+        `Nft name is -${nftName}-, Nft description is -${nftDescription}-`
+      );
+    }
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Generate Nfts | VericraftAi</title>
+      </Head>
+
+      <Container>
+        <div>
+          <BackButton />
+          <Navbar />
+        </div>
+
+        <Row>
+          <Col1>
+            <div>
+              <Input
+                icon={<MagnifyingGlassSimpleSVG />}
+                label=""
+                placeholder="generate nft with ai"
+              />
+
+              <div className="or">OR</div>
+
+              <Uploader />
+            </div>
+          </Col1>
+
+          <Col2>
+            <form onSubmit={handleSubmit}>
+              <Input
+                label="name"
+                placeholder="name your nft"
+                value={nftName}
+                onChange={handleNftNameChange}
+                error={showErrorName ? "name cannot be empty" : null}
+              />
+              <Textarea
+                label="description"
+                placeholder="Content"
+                value={nftDescription}
+                onChange={handleNftDescriptionChange}
+                error={
+                  showErrorDescription ? "description cannot be empty" : null
+                }
+              />
+
+              <Button
+                type="submit"
+                disabled={showErrorDescription || showErrorName}
+              >
+                create
+              </Button>
+            </form>
+          </Col2>
+        </Row>
+      </Container>
+    </>
+  );
 }
