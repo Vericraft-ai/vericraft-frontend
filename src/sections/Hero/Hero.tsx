@@ -3,6 +3,7 @@ import { Spiral } from "../../components/Icons/Spiral";
 import Image from "next/image";
 import { Button } from "@ensdomains/thorin";
 import { Center } from "../../components/Layout";
+import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 export const StyledHero = styled.div`
   display: flex;
@@ -69,6 +70,8 @@ const GenerateNftsWrapper = styled.div`
 `;
 
 export const Hero = () => {
+  const { open } = useWeb3Modal();
+  const { isConnected } = useWeb3ModalAccount();
   return (
     <StyledHero>
       <GenerateNftsWrapper>
@@ -86,7 +89,7 @@ export const Hero = () => {
       />
 
       <Center>
-        <Button>get started</Button>
+        { !isConnected && <Button onClick={() => open()}>get started</Button>}
       </Center>
     </StyledHero>
   );
