@@ -27,21 +27,26 @@ const saveFile = async (file) => {
     throw error;
   }
 };
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "POST") {
     try {
       const form = formidable({});
-      form.parse(req, async function (err, fields, files) {
-        console.log(files)
-        if (err) {
-          console.log({ err });
-          return res.status(500).send("Upload Error");
-        }
-        const response = await saveFile(files?.file?.[0]);
-        const { IpfsHash } = response;
+      form.parse(
+        req,
+        async function (err: any, _fields: any, files: { file: any[] }) {
+          if (err) {
+            console.log({ err });
+            return res.status(500).send("Upload Error");
+          }
+          const response = await saveFile(files?.file?.[0]);
+          const { IpfsHash } = response;
 
-        return res.send(IpfsHash);
-      });
+          return res.send(IpfsHash);
+        }
+      );
     } catch (e) {
       console.log(e);
       res.status(500).send("Server Error");
