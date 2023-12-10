@@ -1,11 +1,19 @@
-import { CONTRACT_ADDRESS, PINATA_IPS_URL } from "@/consts";
+import {
+  CONTRACT_ADDRESS,
+  PINATA_IPS_URL,
+  DESTINATION_CHAIN,
+  DESTINATION_MINTER,
+  FEES,
+} from "@/consts";
+import { ethers } from "ethers";
 import contractABI from "@/web3/contractAbi.json";
 import { useIPFS } from "../useIPFS";
 import {
   useWeb3ModalAccount,
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
-import { BrowserProvider, Contract } from "ethers";
+import { BrowserProvider, JsonRpcProvider, Contract } from "ethers";
+import { getCcipMessageId } from "@/web3/helpers";
 
 export const useMinter = () => {
   const { pinJSONToIPFS } = useIPFS();
@@ -33,15 +41,34 @@ export const useMinter = () => {
     const signer = await ethersProvider.getSigner();
     const contract = new Contract(CONTRACT_ADDRESS, contractABI.abi, signer); //loadContract();
 
-    //sign transaction via Metamask
     try {
-      const tx = await contract.mint(address, tokenURI);
-      console.log(tx);
+      const tx = await contract.mint(
+        DESTINATION_CHAIN,
+        DESTINATION_MINTER,
+        FEES,
+        tokenURI,
+        {
+          gasLimit: 500000,
+        }
+      );
+
+      const receipt = await tx.wait(1);
+      const jsonProvider = new JsonRpcProvider(
+        process.env.NEXT_PUBLIC_AVALANCHE_FUJI_RPC_URL
+      );
+
+      // not fully working yet (This should be the part thata handles cross chain minting status)
+      const messageid = await getCcipMessageId(tx, receipt, jsonProvider);
+
+      console.log(
+        "✅ Check out your transaction on Etherscan: https://testnet.snowtrace.io/tx/" +
+          tx.hash
+      );
       return {
         success: true,
         status:
-          "✅ Check out your transaction on Etherscan: https://goerli.etherscan.io/tx/" +
-          tx,
+          "✅ Check out your transaction on Etherscan: https://testnet.snowtrace.io/tx/" +
+          tx.hash,
       };
     } catch (error) {
       console.log(error);
