@@ -2,9 +2,9 @@ import { Button } from "@ensdomains/thorin";
 import Link from "next/link";
 import styled from "styled-components";
 import { Logo } from "../Icons/Logo";
-import { UserIcon } from "../Icons/UserIcon";
 import { WalletIcon } from "../Icons/WalletIcon";
 import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { useEffect, useState } from "react";
 
 const NavContainer = styled.nav<{ sticky?: boolean }>`
   display: flex;
@@ -56,9 +56,23 @@ type Props = {
   showProfile?: boolean;
 };
 
-export const Navbar = ({ showLogo, sticky, showProfile }: Props) => {
+export const Navbar = ({ showLogo, sticky }: Props) => {
   const { open } = useWeb3Modal();
+  const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { address, isConnected } = useWeb3ModalAccount();
+
+  useEffect(() => {
+    setIsClient(true);
+
+    if (isConnected !== undefined) {
+      setIsLoading(false);
+    }
+  }, [isConnected]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const truncatedAddress = address
     ? `${address?.slice(0, 4)}...${address?.slice(-2)}`
@@ -86,7 +100,7 @@ export const Navbar = ({ showLogo, sticky, showProfile }: Props) => {
       <div>
         {isConnected && (
           <Button colorStyle="greySecondary" onClick={() => open()}>
-            <WalletIcon />
+            {isClient && <WalletIcon />}
             <span>{truncatedAddress}</span>
           </Button>
         )}

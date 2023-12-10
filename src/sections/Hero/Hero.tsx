@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@ensdomains/thorin";
 import { Center } from "../../components/Layout";
 import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { useEffect, useState } from "react";
 
 export const StyledHero = styled.div`
   display: flex;
@@ -72,6 +73,18 @@ const GenerateNftsWrapper = styled.div`
 export const Hero = () => {
   const { open } = useWeb3Modal();
   const { isConnected } = useWeb3ModalAccount();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isConnected !== undefined) {
+      setIsLoading(false);
+    }
+  }, [isConnected]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <StyledHero>
       <GenerateNftsWrapper>
@@ -89,7 +102,7 @@ export const Hero = () => {
       />
 
       <Center>
-        { !isConnected && <Button onClick={() => open()}>get started</Button>}
+        {!isConnected && <Button onClick={() => open()}>get started</Button>}
       </Center>
     </StyledHero>
   );
