@@ -3,11 +3,11 @@ import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID || "";
 
 const mainnet = {
-  chainId: 43114,
-  name: "Avalanche Network",
-  currency: "ETH",
-  explorerUrl: " https://snowtrace.io/",
-  rpcUrl: "https://api.avax.network/ext/bc/C/rpc",
+  chainId: 80001,
+  name: "Mumbai Testnet",
+  currency: "MATIC",
+  explorerUrl: "https://mumbai.polygonscan.com",
+  rpcUrl: "https://polygon-mumbai-pokt.nodies.app",
 };
 const metadata = {
   name: "Vericraft AI",

@@ -18,9 +18,23 @@ export const useIPFS = () => {
       const ipfsHash = await res.text();
       setCid(ipfsHash);
       setUploading(false);
+      return ipfsHash;
     } catch (e) {
       console.log(e);
       setUploading(false);
+    }
+  };
+
+  const pinJSONToIPFS = async (json: object) => {
+    try {
+      const res = await fetch("/api/metadata", {
+        method: "POST",
+        body: JSON.stringify({ json: json }),
+      });
+      const response = await res.json();
+      return response;
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -41,5 +55,6 @@ export const useIPFS = () => {
     setUploading,
     uploadFile,
     loadRecent,
+    pinJSONToIPFS,
   };
 };
