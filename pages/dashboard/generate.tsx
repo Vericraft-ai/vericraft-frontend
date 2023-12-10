@@ -7,7 +7,8 @@ import {
   Button,
   Input,
   MagnifyingGlassSimpleSVG,
-  Textarea,
+  Spinner,
+  Textarea
 } from "@ensdomains/thorin";
 import Head from "next/head";
 import Image from "next/image";
@@ -186,6 +187,7 @@ export default function GenerateNfts() {
               </div>
             </div>
             <div className="generate-image">
+              {isLoading && <Spinner size="large" />}
               {!isLoading && imgSrc && (
                 <Image
                   height={250}
