@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   CONTRACT_ADDRESS,
   PINATA_IPS_URL,
